@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "vb-syntax", "vb-syntax.vbproj", "{6BEF566A-2691-4EE8-91AF-0390CCCDDAF1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6BEF566A-2691-4EE8-91AF-0390CCCDDAF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BEF566A-2691-4EE8-91AF-0390CCCDDAF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BEF566A-2691-4EE8-91AF-0390CCCDDAF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BEF566A-2691-4EE8-91AF-0390CCCDDAF1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = vb-syntax.vbproj
+	EndGlobalSection
+EndGlobal

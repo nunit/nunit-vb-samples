@@ -5,7 +5,13 @@ obj/
 #User Specific Files
 *.user
 *.suo
+*.pidb
+*.userprefs
 
 #Resource Caches
 _ReSharper.*
 *.sln.cache
+
+#Editor backup files
+*~
+
