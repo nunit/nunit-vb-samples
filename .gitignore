@@ -15,3 +15,5 @@ _ReSharper.*
 #Editor backup files
 *~
 
+#NuGet
+packages/
