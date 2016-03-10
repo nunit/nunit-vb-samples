@@ -4,9 +4,8 @@
 ' copyright ownership at http://nunit.org
 ' ****************************************************************
 
-Option Explicit On 
+Option Explicit On
 
-Imports System
 Imports NUnit.Framework
 
 Namespace NUnit.Samples

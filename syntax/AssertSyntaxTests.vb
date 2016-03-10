@@ -4,11 +4,8 @@
 ' obtain a copy of the license at http://nunit.org
 ' ****************************************************************
 
-Option Explicit On 
-
-Imports System
+Option Explicit On
 Imports NUnit.Framework
-Imports NUnit.Framework.Constraints
 
 Namespace NUnit.Samples
 
@@ -24,12 +21,12 @@ Namespace NUnit.Samples
     ' This Fixture will eventually be duplicated in other
     ' supported languages. 
 
-    <TestFixture()> _
+    <TestFixture()>
     Public Class AssertSyntaxTests
         Inherits AssertionHelper
 
 #Region "Simple Constraint Tests"
-        <Test()> _
+        <Test()>
         Public Sub IsNull()
             Dim nada As Object = Nothing
 
@@ -37,52 +34,52 @@ Namespace NUnit.Samples
             Assert.IsNull(nada)
 
             ' Helper syntax
-            Assert.That(nada, Iz.Null)
+            Assert.That(nada, [Is].Null)
 
             ' Inherited syntax
             Expect(nada, Null)
         End Sub
 
 
-        <Test()> _
+        <Test()>
         Public Sub IsNotNull()
             ' Classic syntax
             Assert.IsNotNull(42)
 
             ' Helper syntax
-            Assert.That(42, Iz.Not.Null)
+            Assert.That(42, [Is].Not.Null)
 
             ' Inherited syntax
-            Expect(42, Iz.Not.Null)
+            Expect(42, [Is].Not.Null)
         End Sub
 
-        <Test()> _
+        <Test()>
         Public Sub IsTrue()
             ' Classic syntax
             Assert.IsTrue(2 + 2 = 4)
 
             ' Helper syntax
-            Assert.That(2 + 2 = 4, Iz.True)
+            Assert.That(2 + 2 = 4, [Is].True)
             Assert.That(2 + 2 = 4)
 
             ' Inherited syntax
-            Expect(2 + 2 = 4, Iz.True)
+            Expect(2 + 2 = 4, True)
             Expect(2 + 2 = 4)
         End Sub
 
-        <Test()> _
+        <Test()>
         Public Sub IsFalse()
             ' Classic syntax
             Assert.IsFalse(2 + 2 = 5)
 
             ' Helper syntax
-            Assert.That(2 + 2 = 5, Iz.False)
+            Assert.That(2 + 2 = 5, [Is].False)
 
             ' Inherited syntax
-            Expect(2 + 2 = 5, Iz.False)
+            Expect(2 + 2 = 5, False)
         End Sub
 
-        <Test()> _
+        <Test()>
         Public Sub IsNaN()
             Dim d As Double = Double.NaN
             Dim f As Single = Single.NaN
@@ -92,30 +89,30 @@ Namespace NUnit.Samples
             Assert.IsNaN(f)
 
             ' Helper syntax
-            Assert.That(d, Iz.NaN)
-            Assert.That(f, Iz.NaN)
+            Assert.That(d, [Is].NaN)
+            Assert.That(f, [Is].NaN)
 
             ' Inherited syntax
             Expect(d, NaN)
             Expect(f, NaN)
         End Sub
 
-        <Test()> _
+        <Test()>
         Public Sub EmptyStringTests()
             ' Classic syntax
             Assert.IsEmpty("")
             Assert.IsNotEmpty("Hello!")
 
             ' Helper syntax
-            Assert.That("", Iz.Empty)
-            Assert.That("Hello!", Iz.Not.Empty)
+            Assert.That("", [Is].Empty)
+            Assert.That("Hello!", [Is].Not.Empty)
 
             ' Inherited syntax
             Expect("", Empty)
-            Expect("Hello!", Iz.Not.Empty)
+            Expect("Hello!", [Is].Not.Empty)
         End Sub
 
-        <Test()> _
+        <Test()>
         Public Sub EmptyCollectionTests()
 
             Dim boolArray As Boolean() = New Boolean() {}
@@ -126,17 +123,17 @@ Namespace NUnit.Samples
             Assert.IsNotEmpty(nonEmpty)
 
             ' Helper syntax
-            Assert.That(boolArray, Iz.Empty)
-            Assert.That(nonEmpty, Iz.Not.Empty)
+            Assert.That(boolArray, [Is].Empty)
+            Assert.That(nonEmpty, [Is].Not.Empty)
 
             ' Inherited syntax
-            Expect(boolArray, Iz.Empty)
-            Expect(nonEmpty, Iz.Not.Empty)
+            Expect(boolArray, Empty)
+            Expect(nonEmpty, [Is].Not.Empty)
         End Sub
 #End Region
 
 #Region "TypeConstraint Tests"
-        <Test()> _
+        <Test()>
         Public Sub ExactTypeTests()
             ' Classic syntax workarounds
             Assert.AreEqual(GetType(String), "Hello".GetType())
@@ -145,47 +142,47 @@ Namespace NUnit.Samples
             Assert.AreNotEqual("System.Int32", "Hello".GetType().FullName)
 
             ' Helper syntax
-            Assert.That("Hello", Iz.TypeOf(GetType(String)))
-            Assert.That("Hello", Iz.Not.TypeOf(GetType(Integer)))
+            Assert.That("Hello", [Is].TypeOf(GetType(String)))
+            Assert.That("Hello", [Is].Not.TypeOf(GetType(Integer)))
 
             ' Inherited syntax
-            Expect("Hello", Iz.TypeOf(GetType(String)))
-            Expect("Hello", Iz.Not.TypeOf(GetType(Integer)))
+            Expect("Hello", [Is].TypeOf(GetType(String)))
+            Expect("Hello", [Is].Not.TypeOf(GetType(Integer)))
         End Sub
 
-        <Test()> _
+        <Test()>
         Public Sub InstanceOfTests()
             ' Classic syntax
             Assert.IsInstanceOf(GetType(String), "Hello")
             Assert.IsNotInstanceOf(GetType(String), 5)
 
             ' Helper syntax
-            Assert.That("Hello", Iz.InstanceOf(GetType(String)))
-            Assert.That(5, Iz.Not.InstanceOf(GetType(String)))
+            Assert.That("Hello", [Is].InstanceOf(GetType(String)))
+            Assert.That(5, [Is].Not.InstanceOf(GetType(String)))
 
             ' Inherited syntax
             Expect("Hello", InstanceOf(GetType(String)))
-            Expect(5, Iz.Not.InstanceOf(GetType(String)))
+            Expect(5, [Is].Not.InstanceOf(GetType(String)))
         End Sub
 
-        <Test()> _
+        <Test()>
         Public Sub AssignableFromTypeTests()
             ' Classic syntax
             Assert.IsAssignableFrom(GetType(String), "Hello")
             Assert.IsNotAssignableFrom(GetType(String), 5)
 
             ' Helper syntax
-            Assert.That("Hello", Iz.AssignableFrom(GetType(String)))
-            Assert.That(5, Iz.Not.AssignableFrom(GetType(String)))
+            Assert.That("Hello", [Is].AssignableFrom(GetType(String)))
+            Assert.That(5, [Is].Not.AssignableFrom(GetType(String)))
 
             ' Inherited syntax
             Expect("Hello", AssignableFrom(GetType(String)))
-            Expect(5, Iz.Not.AssignableFrom(GetType(String)))
+            Expect(5, [Is].Not.AssignableFrom(GetType(String)))
         End Sub
 #End Region
 
 #Region "StringConstraintTests"
-        <Test()> _
+        <Test()>
         Public Sub SubstringTests()
             Dim phrase As String = "Hello World!"
             Dim array As String() = New String() {"abc", "bad", "dba"}
@@ -194,23 +191,23 @@ Namespace NUnit.Samples
             StringAssert.Contains("World", phrase)
 
             ' Helper syntax
-            Assert.That(phrase, Iz.StringContaining("World"))
+            Assert.That(phrase, Does.Contain("World"))
             ' Only available using new syntax
-            Assert.That(phrase, Iz.Not.StringContaining("goodbye"))
-            Assert.That(phrase, Iz.StringContaining("WORLD").IgnoreCase)
-            Assert.That(phrase, Iz.Not.StringContaining("BYE").IgnoreCase)
-            Assert.That(array, Iz.All.StringContaining("b"))
+            Assert.That(phrase, Does.Not.Contains("goodbye"))
+            Assert.That(phrase, Contains("WORLD").IgnoreCase)
+            Assert.That(phrase, Does.Not.Contains("BYE").IgnoreCase)
+            Assert.That(array, [Is].All.Contains("b"))
 
             ' Inherited syntax
             Expect(phrase, Contains("World"))
             ' Only available using new syntax
-            Expect(phrase, Iz.Not.Contains("goodbye"))
+            Expect(phrase, [Is].Not.Contains("goodbye"))
             Expect(phrase, Contains("WORLD").IgnoreCase)
-            Expect(phrase, Iz.Not.Contains("BYE").IgnoreCase)
+            Expect(phrase, [Is].Not.Contains("BYE").IgnoreCase)
             Expect(array, All.Contains("b"))
         End Sub
 
-        <Test()> _
+        <Test()>
         Public Sub StartsWithTests()
             Dim phrase As String = "Hello World!"
             Dim greetings As String() = New String() {"Hello!", "Hi!", "Hola!"}
@@ -219,23 +216,23 @@ Namespace NUnit.Samples
             StringAssert.StartsWith("Hello", phrase)
 
             ' Helper syntax
-            Assert.That(phrase, Iz.StringStarting("Hello"))
+            Assert.That(phrase, Does.StartWith("Hello"))
             ' Only available using new syntax
-            Assert.That(phrase, Iz.Not.StringStarting("Hi!"))
-            Assert.That(phrase, Iz.StringStarting("HeLLo").IgnoreCase)
-            Assert.That(phrase, Iz.Not.StringStarting("HI").IgnoreCase)
-            Assert.That(greetings, Iz.All.StringStarting("h").IgnoreCase)
+            Assert.That(phrase, Does.Not.StartsWith("Hi!"))
+            Assert.That(phrase, Does.StartWith("HeLLo").IgnoreCase)
+            Assert.That(phrase, Does.Not.StartsWith("HI").IgnoreCase)
+            Assert.That(greetings, [Is].All.StartsWith("h").IgnoreCase)
 
             ' Inherited syntax
             Expect(phrase, StartsWith("Hello"))
             ' Only available using new syntax
-            Expect(phrase, Iz.Not.StringStarting("Hi!"))
+            Expect(phrase, Does.Not.StartsWith("Hi!"))
             Expect(phrase, StartsWith("HeLLo").IgnoreCase)
-            Expect(phrase, Iz.Not.StringStarting("HI").IgnoreCase)
+            Expect(phrase, Does.Not.StartsWith("HI").IgnoreCase)
             Expect(greetings, All.StartsWith("h").IgnoreCase)
         End Sub
 
-        <Test()> _
+        <Test()>
         Public Sub EndsWithTests()
             Dim phrase As String = "Hello World!"
             Dim greetings As String() = New String() {"Hello!", "Hi!", "Hola!"}
@@ -244,21 +241,21 @@ Namespace NUnit.Samples
             StringAssert.EndsWith("!", phrase)
 
             ' Helper syntax
-            Assert.That(phrase, Iz.StringEnding("!"))
+            Assert.That(phrase, Does.EndWith("!"))
             ' Only available using new syntax
-            Assert.That(phrase, Iz.Not.StringEnding("?"))
-            Assert.That(phrase, Iz.StringEnding("WORLD!").IgnoreCase)
-            Assert.That(greetings, Iz.All.StringEnding("!"))
+            Assert.That(phrase, Does.Not.EndWith("?"))
+            Assert.That(phrase, Does.EndWith("WORLD!").IgnoreCase)
+            Assert.That(greetings, [Is].All.EndsWith("!"))
 
             ' Inherited syntax
             Expect(phrase, EndsWith("!"))
             ' Only available using new syntax
-            Expect(phrase, Iz.Not.StringEnding("?"))
+            Expect(phrase, [Is].Not.EndWith("?"))
             Expect(phrase, EndsWith("WORLD!").IgnoreCase)
             Expect(greetings, All.EndsWith("!"))
         End Sub
 
-        <Test()> _
+        <Test()>
         Public Sub EqualIgnoringCaseTests()
 
             Dim phrase As String = "Hello World!"
@@ -270,21 +267,21 @@ Namespace NUnit.Samples
             StringAssert.AreEqualIgnoringCase("hello world!", phrase)
 
             ' Helper syntax
-            Assert.That(phrase, Iz.EqualTo("hello world!").IgnoreCase)
+            Assert.That(phrase, [Is].EqualTo("hello world!").IgnoreCase)
             'Only available using new syntax
-            Assert.That(phrase, Iz.Not.EqualTo("goodbye world!").IgnoreCase)
-            Assert.That(array1, Iz.EqualTo(array2).IgnoreCase)
-            Assert.That(array3, Iz.All.EqualTo("hello").IgnoreCase)
+            Assert.That(phrase, [Is].Not.EqualTo("goodbye world!").IgnoreCase)
+            Assert.That(array1, [Is].EqualTo(array2).IgnoreCase)
+            Assert.That(array3, [Is].All.EqualTo("hello").IgnoreCase)
 
             ' Inherited syntax
             Expect(phrase, EqualTo("hello world!").IgnoreCase)
             'Only available using new syntax
-            Expect(phrase, Iz.Not.EqualTo("goodbye world!").IgnoreCase)
+            Expect(phrase, [Is].Not.EqualTo("goodbye world!").IgnoreCase)
             Expect(array1, EqualTo(array2).IgnoreCase)
             Expect(array3, All.EqualTo("hello").IgnoreCase)
         End Sub
 
-        <Test()> _
+        <Test()>
         Public Sub RegularExpressionTests()
             Dim phrase As String = "Now is the time for all good men to come to the aid of their country."
             Dim quotes As String() = New String() {"Never say never", "It's never too late", "Nevermore!"}
@@ -294,24 +291,24 @@ Namespace NUnit.Samples
             StringAssert.IsMatch("Now.*come", phrase)
 
             ' Helper syntax
-            Assert.That(phrase, Iz.StringMatching("all good men"))
-            Assert.That(phrase, Iz.StringMatching("Now.*come"))
+            Assert.That(phrase, Does.Match("all good men"))
+            Assert.That(phrase, Does.Match("Now.*come"))
             ' Only available using new syntax
-            Assert.That(phrase, Iz.Not.StringMatching("all.*men.*good"))
-            Assert.That(quotes, Iz.All.StringMatching("never").IgnoreCase)
+            Assert.That(phrase, Does.Not.Match("all.*men.*good"))
+            Assert.That(quotes, [Is].All.Matches("never").IgnoreCase)
 
             ' Inherited syntax
             Expect(phrase, Matches("all good men"))
             Expect(phrase, Matches("Now.*come"))
             ' Only available using new syntax
-            Expect(phrase, Iz.Not.StringMatching("all.*men.*good"))
+            Expect(phrase, Does.Not.Matches("all.*men.*good"))
             Expect(phrase, Matches("ALL").IgnoreCase)
             Expect(quotes, All.Matches("never").IgnoreCase)
         End Sub
 #End Region
 
 #Region "Equality Tests"
-        <Test()> _
+        <Test()>
         Public Sub EqualityTests()
 
             Dim i3 As Integer() = {1, 2, 3}
@@ -325,78 +322,78 @@ Namespace NUnit.Samples
             Assert.AreNotEqual(i3, iunequal)
 
             ' Helper syntax
-            Assert.That(2 + 2, Iz.EqualTo(4))
+            Assert.That(2 + 2, [Is].EqualTo(4))
             Assert.That(2 + 2 = 4)
-            Assert.That(i3, Iz.EqualTo(d3))
-            Assert.That(2 + 2, Iz.Not.EqualTo(5))
-            Assert.That(i3, Iz.Not.EqualTo(iunequal))
+            Assert.That(i3, [Is].EqualTo(d3))
+            Assert.That(2 + 2, [Is].Not.EqualTo(5))
+            Assert.That(i3, [Is].Not.EqualTo(iunequal))
 
             ' Inherited syntax
             Expect(2 + 2, EqualTo(4))
             Expect(2 + 2 = 4)
             Expect(i3, EqualTo(d3))
-            Expect(2 + 2, Iz.Not.EqualTo(5))
-            Expect(i3, Iz.Not.EqualTo(iunequal))
+            Expect(2 + 2, [Is].Not.EqualTo(5))
+            Expect(i3, [Is].Not.EqualTo(iunequal))
         End Sub
 
-        <Test()> _
+        <Test()>
         Public Sub EqualityTestsWithTolerance()
             ' CLassic syntax
             Assert.AreEqual(5.0R, 4.99R, 0.05R)
             Assert.AreEqual(5.0F, 4.99F, 0.05F)
 
             ' Helper syntax
-            Assert.That(4.99R, Iz.EqualTo(5.0R).Within(0.05R))
-            Assert.That(4D, Iz.Not.EqualTo(5D).Within(0.5D))
-            Assert.That(4.99F, Iz.EqualTo(5.0F).Within(0.05F))
-            Assert.That(4.99D, Iz.EqualTo(5D).Within(0.05D))
-            Assert.That(499, Iz.EqualTo(500).Within(5))
-            Assert.That(4999999999L, Iz.EqualTo(5000000000L).Within(5L))
+            Assert.That(4.99R, [Is].EqualTo(5.0R).Within(0.05R))
+            Assert.That(4D, [Is].Not.EqualTo(5D).Within(0.5D))
+            Assert.That(4.99F, [Is].EqualTo(5.0F).Within(0.05F))
+            Assert.That(4.99D, [Is].EqualTo(5D).Within(0.05D))
+            Assert.That(499, [Is].EqualTo(500).Within(5))
+            Assert.That(4999999999L, [Is].EqualTo(5000000000L).Within(5L))
 
             ' Inherited syntax
             Expect(4.99R, EqualTo(5.0R).Within(0.05R))
-            Expect(4D, Iz.Not.EqualTo(5D).Within(0.5D))
+            Expect(4D, [Is].Not.EqualTo(5D).Within(0.5D))
             Expect(4.99F, EqualTo(5.0F).Within(0.05F))
             Expect(4.99D, EqualTo(5D).Within(0.05D))
             Expect(499, EqualTo(500).Within(5))
             Expect(4999999999L, EqualTo(5000000000L).Within(5L))
         End Sub
 
-        <Test()> _
+        <Test()>
         Public Sub EqualityTestsWithTolerance_MixedFloatAndDouble()
             ' Bug Fix 1743844
-            Assert.That(2.20492R, Iz.EqualTo(2.2R).Within(0.01F), _
+            Assert.That(2.20492R, [Is].EqualTo(2.2R).Within(0.01F),
                 "Double actual, Double expected, Single tolerance")
-            Assert.That(2.20492R, Iz.EqualTo(2.2F).Within(0.01R), _
+            Assert.That(2.20492R, [Is].EqualTo(2.2F).Within(0.01R),
                 "Double actual, Single expected, Double tolerance")
-            Assert.That(2.20492R, Iz.EqualTo(2.2F).Within(0.01F), _
+            Assert.That(2.20492R, [Is].EqualTo(2.2F).Within(0.01F),
                 "Double actual, Single expected, Single tolerance")
-            Assert.That(2.20492F, Iz.EqualTo(2.2F).Within(0.01R), _
+            Assert.That(2.20492F, [Is].EqualTo(2.2F).Within(0.01R),
                 "Single actual, Single expected, Double tolerance")
-            Assert.That(2.20492F, Iz.EqualTo(2.2R).Within(0.01R), _
+            Assert.That(2.20492F, [Is].EqualTo(2.2R).Within(0.01R),
                 "Single actual, Double expected, Double tolerance")
-            Assert.That(2.20492F, Iz.EqualTo(2.2R).Within(0.01F), _
+            Assert.That(2.20492F, [Is].EqualTo(2.2R).Within(0.01F),
                 "Single actual, Double expected, Single tolerance")
         End Sub
 
-        <Test()> _
+        <Test()>
         Public Sub EqualityTestsWithTolerance_MixingTypesGenerally()
             ' Extending tolerance to all numeric types
-            Assert.That(202.0R, Iz.EqualTo(200.0R).Within(2), _
+            Assert.That(202.0R, [Is].EqualTo(200.0R).Within(2),
                 "Double actual, Double expected, int tolerance")
-            Assert.That(4.87D, Iz.EqualTo(5).Within(0.25R), _
+            Assert.That(4.87D, [Is].EqualTo(5).Within(0.25R),
                 "Decimal actual, int expected, Double tolerance")
-            Assert.That(4.87D, Iz.EqualTo(5L).Within(1), _
+            Assert.That(4.87D, [Is].EqualTo(5L).Within(1),
                 "Decimal actual, long expected, int tolerance")
-            Assert.That(487, Iz.EqualTo(500).Within(25), _
+            Assert.That(487, [Is].EqualTo(500).Within(25),
                 "int actual, int expected, int tolerance")
-            Assert.That(487L, Iz.EqualTo(500).Within(25), _
+            Assert.That(487L, [Is].EqualTo(500).Within(25),
                 "long actual, int expected, int tolerance")
         End Sub
 #End Region
 
 #Region "Comparison Tests"
-        <Test()> _
+        <Test()>
         Public Sub ComparisonTests()
             ' Classic Syntax
             Assert.Greater(7, 3)
@@ -404,11 +401,11 @@ Namespace NUnit.Samples
             Assert.GreaterOrEqual(7, 7)
 
             ' Helper syntax
-            Assert.That(7, Iz.GreaterThan(3))
-            Assert.That(7, Iz.GreaterThanOrEqualTo(3))
-            Assert.That(7, Iz.AtLeast(3))
-            Assert.That(7, Iz.GreaterThanOrEqualTo(7))
-            Assert.That(7, Iz.AtLeast(7))
+            Assert.That(7, [Is].GreaterThan(3))
+            Assert.That(7, [Is].GreaterThanOrEqualTo(3))
+            Assert.That(7, [Is].AtLeast(3))
+            Assert.That(7, [Is].GreaterThanOrEqualTo(7))
+            Assert.That(7, [Is].AtLeast(7))
 
             ' Inherited syntax
             Expect(7, GreaterThan(3))
@@ -423,11 +420,11 @@ Namespace NUnit.Samples
             Assert.LessOrEqual(3, 3)
 
             ' Helper syntax
-            Assert.That(3, Iz.LessThan(7))
-            Assert.That(3, Iz.LessThanOrEqualTo(7))
-            Assert.That(3, Iz.AtMost(7))
-            Assert.That(3, Iz.LessThanOrEqualTo(3))
-            Assert.That(3, Iz.AtMost(3))
+            Assert.That(3, [Is].LessThan(7))
+            Assert.That(3, [Is].LessThanOrEqualTo(7))
+            Assert.That(3, [Is].AtMost(7))
+            Assert.That(3, [Is].LessThanOrEqualTo(3))
+            Assert.That(3, [Is].AtMost(3))
 
             ' Inherited syntax
             Expect(3, LessThan(7))
@@ -439,7 +436,7 @@ Namespace NUnit.Samples
 #End Region
 
 #Region "Collection Tests"
-        <Test()> _
+        <Test()>
         Public Sub AllItemsTests()
 
             Dim ints As Object() = {1, 2, 3, 4}
@@ -453,19 +450,19 @@ Namespace NUnit.Samples
             CollectionAssert.AllItemsAreUnique(ints)
 
             ' Helper syntax
-            Assert.That(ints, Iz.All.Not.Null)
+            Assert.That(ints, [Is].All.Not.Null)
             Assert.That(ints, Has.None.Null)
-            Assert.That(ints, Iz.All.InstanceOf(GetType(Integer)))
+            Assert.That(ints, [Is].All.InstanceOf(GetType(Integer)))
             Assert.That(ints, Has.All.InstanceOf(GetType(Integer)))
-            Assert.That(strings, Iz.All.InstanceOf(GetType(String)))
+            Assert.That(strings, [Is].All.InstanceOf(GetType(String)))
             Assert.That(strings, Has.All.InstanceOf(GetType(String)))
             Assert.That(ints, Iz.Unique)
             ' Only available using new syntax
-            Assert.That(strings, Iz.Not.Unique)
-            Assert.That(ints, Iz.All.GreaterThan(0))
+            Assert.That(strings, [Is].Not.Unique)
+            Assert.That(ints, [Is].All.GreaterThan(0))
             Assert.That(ints, Has.All.GreaterThan(0))
             Assert.That(ints, Has.None.LessThanOrEqualTo(0))
-            Assert.That(strings, Iz.All.StringContaining("a"))
+            Assert.That(strings, [Is].All.Contains("a"))
             Assert.That(strings, Has.All.Contains("a"))
             Assert.That(strings, Has.Some.StartsWith("ba"))
             Assert.That(strings, Has.Some.Property("Length").EqualTo(3))
@@ -479,7 +476,7 @@ Namespace NUnit.Samples
             Expect(strings, All.InstanceOf(GetType(String)))
             Expect(ints, Unique)
             ' Only available using new syntax
-            Expect(strings, Iz.Not.Unique)
+            Expect(strings, [Is].Not.Unique)
             Expect(ints, All.GreaterThan(0))
             Expect(strings, All.Contains("a"))
             Expect(strings, Some.StartsWith("ba"))
@@ -487,8 +484,8 @@ Namespace NUnit.Samples
             Expect(doubles, Some.EqualTo(1.0).Within(0.05))
         End Sub
 
-        <Test()> _
-       Public Sub SomeItemsTests()
+        <Test()>
+        Public Sub SomeItemsTests()
 
             Dim mixed As Object() = {1, 2, "3", Nothing, "four", 100}
             Dim strings As Object() = {"abc", "bad", "cab", "bad", "dad"}
@@ -510,7 +507,7 @@ Namespace NUnit.Samples
             Expect(strings, Some.Not.StartsWith("ba"))
         End Sub
 
-        <Test()> _
+        <Test()>
         Public Sub NoItemsTests()
 
             Dim ints As Object() = {1, 2, 3, 4, 5}
@@ -531,7 +528,7 @@ Namespace NUnit.Samples
             Expect(strings, None.StartsWith("qu"))
         End Sub
 
-        <Test()> _
+        <Test()>
         Public Sub CollectionContainsTests()
 
             Dim iarray As Integer() = {1, 2, 3}
@@ -583,7 +580,7 @@ Namespace NUnit.Samples
             Expect(sarray, None.Property("Length").GreaterThan(3))
         End Sub
 
-        <Test()> _
+        <Test()>
         Public Sub CollectionEquivalenceTests()
 
             Dim ints1to5 As Integer() = {1, 2, 3, 4, 5}
@@ -599,16 +596,16 @@ Namespace NUnit.Samples
 
             ' Helper syntax
             Assert.That(New Integer() {2, 1, 4, 3, 5}, Iz.EquivalentTo(ints1to5))
-            Assert.That(New Integer() {2, 2, 4, 3, 5}, Iz.Not.EquivalentTo(ints1to5))
-            Assert.That(New Integer() {2, 4, 3, 5}, Iz.Not.EquivalentTo(ints1to5))
-            Assert.That(New Integer() {2, 2, 1, 1, 4, 3, 5}, Iz.Not.EquivalentTo(ints1to5))
-            Assert.That(twothrees, Iz.Not.EquivalentTo(twofours))
+            Assert.That(New Integer() {2, 2, 4, 3, 5}, [Is].Not.EquivalentTo(ints1to5))
+            Assert.That(New Integer() {2, 4, 3, 5}, [Is].Not.EquivalentTo(ints1to5))
+            Assert.That(New Integer() {2, 2, 1, 1, 4, 3, 5}, [Is].Not.EquivalentTo(ints1to5))
+            Assert.That(twothrees, [Is].Not.EquivalentTo(twofours))
 
             ' Inherited syntax
             Expect(New Integer() {2, 1, 4, 3, 5}, EquivalentTo(ints1to5))
         End Sub
 
-        <Test()> _
+        <Test()>
         Public Sub SubsetTests()
 
             Dim ints1to5 As Integer() = {1, 2, 3, 4, 5}
@@ -620,19 +617,19 @@ Namespace NUnit.Samples
             CollectionAssert.IsNotSubsetOf(New Integer() {1, 2, 2, 2, 5}, ints1to5)
 
             ' Helper syntax
-            Assert.That(New Integer() {1, 3, 5}, Iz.SubsetOf(ints1to5))
-            Assert.That(New Integer() {1, 2, 3, 4, 5}, Iz.SubsetOf(ints1to5))
-            Assert.That(New Integer() {2, 4, 6}, Iz.Not.SubsetOf(ints1to5))
+            Assert.That(New Integer() {1, 3, 5}, [Is].SubsetOf(ints1to5))
+            Assert.That(New Integer() {1, 2, 3, 4, 5}, [Is].SubsetOf(ints1to5))
+            Assert.That(New Integer() {2, 4, 6}, [Is].Not.SubsetOf(ints1to5))
 
             ' Inherited syntax
             Expect(New Integer() {1, 3, 5}, SubsetOf(ints1to5))
             Expect(New Integer() {1, 2, 3, 4, 5}, SubsetOf(ints1to5))
-            Expect(New Integer() {2, 4, 6}, Iz.Not.SubsetOf(ints1to5))
+            Expect(New Integer() {2, 4, 6}, [Is].Not.SubsetOf(ints1to5))
         End Sub
 #End Region
 
 #Region "Property Tests"
-        <Test()> _
+        <Test()>
         Public Sub PropertyTests()
 
             Dim array As String() = {"abc", "bca", "xyz", "qrs"}
@@ -642,8 +639,8 @@ Namespace NUnit.Samples
             ' Not available using the classic syntax
 
             ' Helper syntax
-            ' Assert.That(list, Has.Property("Count"))
-            ' Assert.That(list, Has.No.Property("Length"))
+            Assert.That(list, Has.Property("Count"))
+            Assert.That(list, Has.No.Property("Length"))
 
             Assert.That("Hello", Has.Length.EqualTo(5))
             Assert.That("Hello", Has.Property("Length").EqualTo(5))
@@ -655,17 +652,17 @@ Namespace NUnit.Samples
 
             Assert.That(array, Has.All.Property("Length").EqualTo(3))
             Assert.That(array, Has.All.Length.EqualTo(3))
-            Assert.That(array, Iz.All.Length.EqualTo(3))
+            Assert.That(array, [Is].All.Length.EqualTo(3))
             Assert.That(array, Has.All.Property("Length").EqualTo(3))
-            Assert.That(array, Iz.All.Property("Length").EqualTo(3))
+            Assert.That(array, [Is].All.Property("Length").EqualTo(3))
 
-            Assert.That(array2, Iz.Not.Property("Length").EqualTo(4))
-            Assert.That(array2, Iz.Not.Length.EqualTo(4))
+            Assert.That(array2, [Is].Not.Property("Length").EqualTo(4))
+            Assert.That(array2, [Is].Not.Length.EqualTo(4))
             Assert.That(array2, Has.No.Property("Length").GreaterThan(3))
 
             ' Inherited syntax
-            ' Expect(list, Has.Property("Count"))
-            ' Expect(list, Has.No.Property("Nada"))
+            Expect(list, Has.Property("Count"))
+            Expect(list, Has.No.Property("Nada"))
 
             Expect(array, All.Property("Length").EqualTo(3))
             Expect(array, All.Length.EqualTo(3))
@@ -673,27 +670,27 @@ Namespace NUnit.Samples
 #End Region
 
 #Region "Not Tests"
-        <Test()> _
+        <Test()>
         Public Sub NotTests()
             ' Not available using the classic syntax
 
             ' Helper syntax
-            Assert.That(42, Iz.Not.Null)
-            Assert.That(42, Iz.Not.True)
-            Assert.That(42, Iz.Not.False)
-            Assert.That(2.5, Iz.Not.NaN)
-            Assert.That(2 + 2, Iz.Not.EqualTo(3))
-            Assert.That(2 + 2, Iz.Not.Not.EqualTo(4))
-            Assert.That(2 + 2, Iz.Not.Not.Not.EqualTo(5))
+            Assert.That(42, [Is].Not.Null)
+            Assert.That(42, [Is].Not.True)
+            Assert.That(42, [Is].Not.False)
+            Assert.That(2.5, [Is].Not.NaN)
+            Assert.That(2 + 2, [Is].Not.EqualTo(3))
+            Assert.That(2 + 2, [Is].Not.Not.EqualTo(4))
+            Assert.That(2 + 2, [Is].Not.Not.Not.EqualTo(5))
 
             ' Inherited syntax
-            Expect(42, Iz.Not.Null)
-            Expect(42, Iz.Not.True)
-            Expect(42, Iz.Not.False)
-            Expect(2.5, Iz.Not.NaN)
-            Expect(2 + 2, Iz.Not.EqualTo(3))
-            Expect(2 + 2, Iz.Not.Not.EqualTo(4))
-            Expect(2 + 2, Iz.Not.Not.Not.EqualTo(5))
+            Expect(42, [Is].Not.Null)
+            Expect(42, [Is].Not.True)
+            Expect(42, [Is].Not.False)
+            Expect(2.5, [Is].Not.NaN)
+            Expect(2 + 2, [Is].Not.EqualTo(3))
+            Expect(2 + 2, [Is].Not.Not.EqualTo(4))
+            Expect(2 + 2, [Is].Not.Not.Not.EqualTo(5))
         End Sub
 #End Region
 
