@@ -117,11 +117,11 @@ Namespace NUnit.Samples
         End Function
 
         Public Overrides Function GetHashCode() As Int32
-            Dim hash As Int32 = 0
+            Dim hash As Long = 0
             For Each m As Money In fmonies
                 hash += m.GetHashCode()
             Next
-            Return hash
+            Return hash Mod Integer.MaxValue
         End Function
 
         Public ReadOnly Property IsZero() As Boolean Implements IMoney.IsZero
