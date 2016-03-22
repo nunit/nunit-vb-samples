@@ -88,7 +88,7 @@ Task("RestoreNUnitConsole")
 		NuGetInstall("NUnit.ConsoleRunner", 
 			new NuGetInstallSettings()
 			{
-				Version = 3.2.0,
+				Version = "3.2.0",
 				PackagesDirectory = TOOLS_DIR
 			});
 	});
