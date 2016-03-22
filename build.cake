@@ -89,7 +89,7 @@ Task("RestoreNUnitConsole")
 			new NuGetInstallSettings()
 			{
 				Version = "3.2.0",
-				PackagesDirectory = TOOLS_DIR
+				OutputDirectory = TOOLS_DIR
 			});
 	});
 
