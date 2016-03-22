@@ -20,7 +20,6 @@ var PROJ_EXT = "*.vbproj";
 var ROOT_DIR = Context.Environment.WorkingDirectory.FullPath + "/";
 var TOOLS_DIR = ROOT_DIR + "tools/";
 var NUNIT3_CONSOLE = TOOLS_DIR + "NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe";
-var PACKAGES_CONFIG = TOOLS_DIR + "packages.config";
 
 //////////////////////////////////////////////////////////////////////
 // ERROR LOG
@@ -86,9 +85,10 @@ Task("Build")
 Task("RestoreNUnitConsole")
 .Does(() => 
 	{
-		NuGetRestore(PACKAGES_CONFIG, 
-			new NuGetRestoreSettings()
+		NuGetInstall("NUnit.ConsoleRunner", 
+			new NuGetInstallSettings()
 			{
+				Version = 3.2.0
 				PackagesDirectory = TOOLS_DIR
 			});
 	});
