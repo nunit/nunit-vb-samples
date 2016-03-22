@@ -1,6 +1,8 @@
 # Build and Object Folders
 bin/
 obj/
+tools/Cake/
+TestResult.xml
 
 #User Specific Files
 *.user
@@ -17,3 +19,7 @@ _ReSharper.*
 
 #NuGet
 packages/
+
+#tools
+tools/Cake
+tools/NUnit.ConsoleRunner.3.2.0
