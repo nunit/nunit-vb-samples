@@ -1,0 +1,9 @@
+language: csharp
+sudo: false
+mono:
+  - latest
+
+install:
+  - nuget install Cake -Version 0.6.4 -OutputDirectory tools\
+script: 
+  - tools\Cake.0.6.4\Cake.exe build.cake
