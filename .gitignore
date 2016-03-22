@@ -1,7 +1,6 @@
 # Build and Object Folders
 bin/
 obj/
-tools/Cake/
 TestResult.xml
 
 #User Specific Files
