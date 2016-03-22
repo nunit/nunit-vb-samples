@@ -1,5 +1,5 @@
 before_build:
-  - nuget restore tools\packages.config
+  - nuget restore tools\packages.config -PackagesDirectory tools\
 
 build_script: 
   - tools\Cake.0.6.4\Cake.exe build.cake
