@@ -109,7 +109,6 @@ Task("Test")
 	foreach(var proj in ProjList)
 	{
 		var bin = DirFrom(proj) + "/bin/";
-		Information(bin);
 		var dllName = bin + System.IO.Path.GetFileNameWithoutExtension(proj) + ".dll";
 
 	int rc = StartProcess(NUNIT3_CONSOLE,
@@ -165,7 +164,7 @@ Task("Rebuild")
 .IsDependentOn("Build");
 
 Task("Default")
-.IsDependentOn("Test");
+.IsDependentOn("Rebuild");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
