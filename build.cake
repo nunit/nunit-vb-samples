@@ -33,10 +33,10 @@ var ErrorDetail = new List<string>();
 
 Task("DiscoverSolutions")
 .Does(() =>
-{
-    SolutionList = System.IO.Directory.GetFiles(ROOT_DIR, "*.sln", SearchOption.AllDirectories);
-    ProjList = System.IO.Directory.GetFiles(ROOT_DIR, PROJ_EXT, SearchOption.AllDirectories);
-});
+    {
+        SolutionList = System.IO.Directory.GetFiles(ROOT_DIR, "*.sln", SearchOption.AllDirectories);
+        ProjList = System.IO.Directory.GetFiles(ROOT_DIR, PROJ_EXT, SearchOption.AllDirectories);
+    });
 
 //////////////////////////////////////////////////////////////////////
 // CLEAN
@@ -71,7 +71,7 @@ Task("Build")
 .Does(() =>
     {
         foreach(var proj in ProjList)
-            BuildProject(proj)
+            BuildProject(proj);
         
     });
 
