@@ -1,8 +1,0 @@
-language: csharp
-sudo: false
-
-mono:
-  - latest
-
-script: 
-  - ./build.sh -t Test

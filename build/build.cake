@@ -17,7 +17,7 @@ var PROJ_EXT = "*.vbproj";
 // DEFINE RUN CONSTANTS
 //////////////////////////////////////////////////////////////////////
 
-var ROOT_DIR = Context.Environment.WorkingDirectory.FullPath + "/";
+var ROOT_DIR = Context.Environment.WorkingDirectory.FullPath + "/../";
 var TOOLS_DIR = ROOT_DIR + "tools/";
 var NUNIT3_CONSOLE = TOOLS_DIR + "NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe";
 

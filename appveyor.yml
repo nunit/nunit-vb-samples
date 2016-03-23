@@ -3,7 +3,7 @@ install:
   - nuget install Cake -Version 0.6.4 -OutputDirectory tools\
 
 build_script: 
-  - tools\Cake.0.6.4\Cake.exe build.cake -Target=Test
+  - ps: build/build.ps1 -Target "Test"
 
 # disable built-in tests.
 test: off
