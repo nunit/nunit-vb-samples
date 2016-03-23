@@ -33,10 +33,10 @@ var ErrorDetail = new List<string>();
 
 Task("DiscoverSolutions")
 .Does(() =>
-	{
-		SolutionList = System.IO.Directory.GetFiles(ROOT_DIR, "*.sln", SearchOption.AllDirectories);
-		ProjList = System.IO.Directory.GetFiles(ROOT_DIR, PROJ_EXT, SearchOption.AllDirectories);
-	});
+{
+    SolutionList = System.IO.Directory.GetFiles(ROOT_DIR, "*.sln", SearchOption.AllDirectories);
+    ProjList = System.IO.Directory.GetFiles(ROOT_DIR, PROJ_EXT, SearchOption.AllDirectories);
+});
 
 //////////////////////////////////////////////////////////////////////
 // CLEAN
@@ -45,10 +45,10 @@ Task("DiscoverSolutions")
 Task("Clean")
 .IsDependentOn("DiscoverSolutions")
 .Does(() =>
-	{
-		foreach(var proj in ProjList)
-			CleanDirectory(DirFrom(proj) + "/bin");
-	});
+    {
+        foreach(var proj in ProjList)
+            CleanDirectory(DirFrom(proj) + "/bin");
+    });
 
 //////////////////////////////////////////////////////////////////////
 // RESTORE PACKAGES
@@ -57,10 +57,10 @@ Task("Clean")
 Task("InitializeBuild")
 .IsDependentOn("DiscoverSolutions")
 .Does(() =>
-	{
-		foreach(var sln in SolutionList)
-			NuGetRestore(sln);
-	});
+    {
+        foreach(var sln in SolutionList)
+            NuGetRestore(sln);
+    });
 
 //////////////////////////////////////////////////////////////////////
 // BUILD
@@ -69,14 +69,11 @@ Task("InitializeBuild")
 Task("Build")
 .IsDependentOn("InitializeBuild")
 .Does(() =>
-	{
-	foreach(var proj in ProjList)
-		MSBuild(proj, new MSBuildSettings()
-			.SetConfiguration(configuration)
-			.SetMSBuildPlatform(MSBuildPlatform.Automatic)
-			.SetVerbosity(Verbosity.Minimal)
-			.SetNodeReuse(false));
-	});
+    {
+        foreach(var proj in ProjList)
+            BuildProject(proj)
+        
+    });
 
 //////////////////////////////////////////////////////////////////////
 // RESTORE NUNIT CONSOLE
@@ -84,46 +81,42 @@ Task("Build")
 
 Task("RestoreNUnitConsole")
 .Does(() => 
-	{
-		NuGetInstall("NUnit.ConsoleRunner", 
-			new NuGetInstallSettings()
-			{
-				Version = "3.2.0",
-				OutputDirectory = TOOLS_DIR
-			});
-	});
+    {
+        NuGetInstall("NUnit.ConsoleRunner", 
+            new NuGetInstallSettings()
+            {
+                Version = "3.2.0",
+                OutputDirectory = TOOLS_DIR
+            });
+    });
 
 //////////////////////////////////////////////////////////////////////
 // TEST
 //////////////////////////////////////////////////////////////////////
 
-Task("CheckForError")
-.Does(() => CheckForError(ref ErrorDetail));
-
 Task("Test")
 .IsDependentOn("Rebuild")
 .IsDependentOn("RestoreNUnitConsole")
-.OnError(exception => {ErrorDetail.Add(exception.Message); })
+.OnError(exception => ErrorDetail.Add(exception.Message))
 .Does(() =>
-{
-	foreach(var proj in ProjList)
-	{
-		var bin = DirFrom(proj) + "/bin/";
-		var dllName = bin + System.IO.Path.GetFileNameWithoutExtension(proj) + ".dll";
+    {
+        foreach(var proj in ProjList)
+        {
+            var bin = DirFrom(proj) + "/bin/";
+            var dllName = bin + System.IO.Path.GetFileNameWithoutExtension(proj) + ".dll";
 
-	int rc = StartProcess(NUNIT3_CONSOLE,
-						new ProcessSettings()
-						{
-							Arguments = dllName
-						});
+            int rc = StartProcess(NUNIT3_CONSOLE,
+                                new ProcessSettings()
+                                {
+                                    Arguments = dllName
+                                });
 
-	if (rc > 0)
-	ErrorDetail.Add(string.Format("{0}: {1} tests failed", dllName, rc));
-	else if (rc < 0)
-	ErrorDetail.Add(string.Format("{0} exited with rc = {1}", dllName, rc));
-
-	}
-});
+            if (rc > 0)
+                ErrorDetail.Add(string.Format("{0}: {1} tests failed", dllName, rc));
+            else if (rc < 0)
+                ErrorDetail.Add(string.Format("{0} exited with rc = {1}", dllName, rc));
+        }
+    });
 
 //////////////////////////////////////////////////////////////////////
 // TEARDOWN TASK
@@ -131,28 +124,47 @@ Task("Test")
 
 Teardown(() =>
 {
-	CheckForError(ref ErrorDetail);
+    CheckForError(ref ErrorDetail);
 });
 
 void CheckForError(ref List<string> errorDetail)
 {
-	if(errorDetail.Count != 0)
-	{
-		var copyError = new List<string>();
-		copyError = errorDetail.Select(s => s).ToList();
-		errorDetail.Clear();
-		throw new Exception("One or more unit tests failed, breaking the build.\n"
-			+ copyError.Aggregate((x,y) => x + "\n" + y));
-	}
+    if(errorDetail.Count != 0)
+    {
+        var copyError = new List<string>();
+        copyError = errorDetail.Select(s => s).ToList();
+        errorDetail.Clear();
+        throw new Exception("One or more unit tests failed, breaking the build.\n"
+            + copyError.Aggregate((x,y) => x + "\n" + y));
+    }
 }
 
 //////////////////////////////////////////////////////////////////////
 // HELPER METHODS
 //////////////////////////////////////////////////////////////////////
 
+void BuildProject(string projPath)
+{
+    if (IsRunningOnWindows())
+    {
+        MSBuild(projPath, new MSBuildSettings()
+            .SetConfiguration(configuration)
+            .SetMSBuildPlatform(MSBuildPlatform.Automatic)
+            .SetVerbosity(Verbosity.Minimal)
+            .SetNodeReuse(false));
+    }
+    else
+    {
+        XBuild(projPath, new XBuildSettings()
+            .WithTarget("Build")
+            .WithProperty("Configuration", configuration)
+            .SetVerbosity(Verbosity.Minimal));
+    }
+}
+
 string DirFrom(string filePath)
 {
-	return System.IO.Path.GetDirectoryName(filePath);
+    return System.IO.Path.GetDirectoryName(filePath);
 }
 
 //////////////////////////////////////////////////////////////////////

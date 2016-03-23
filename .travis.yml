@@ -5,4 +5,4 @@ mono:
   - latest
 
 script: 
-  - ./build.sh -v diagnostic -t Test
+  - ./build.sh -t Test
