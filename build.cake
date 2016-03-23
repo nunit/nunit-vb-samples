@@ -71,7 +71,7 @@ Task("Build")
 .Does(() =>
     {
         foreach(var proj in ProjList)
-            BuildProject(proj);
+            BuildProject(proj, configuration);
         
     });
 
@@ -143,7 +143,7 @@ void CheckForError(ref List<string> errorDetail)
 // HELPER METHODS
 //////////////////////////////////////////////////////////////////////
 
-void BuildProject(string projPath)
+void BuildProject(string projPath, string configuration)
 {
     if (IsRunningOnWindows())
     {
