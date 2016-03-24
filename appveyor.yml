@@ -1,5 +1,5 @@
 build_script: 
-  - ps: build.ps1 -Target "Test"
+  - ps: .\build.ps1 -Target "Test"
 
 # disable built-in tests.
 test: off
