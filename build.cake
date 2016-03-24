@@ -17,9 +17,7 @@ var PROJ_EXT = "*.vbproj";
 // DEFINE RUN CONSTANTS
 //////////////////////////////////////////////////////////////////////
 
-var ROOT_DIR = Context.Environment.WorkingDirectory.FullPath + "/../";
-var TOOLS_DIR = ROOT_DIR + "tools/";
-var NUNIT3_CONSOLE = TOOLS_DIR + "NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe";
+var ROOT_DIR = Context.Environment.WorkingDirectory.FullPath;
 
 //////////////////////////////////////////////////////////////////////
 // ERROR LOG
@@ -47,7 +45,7 @@ Task("Clean")
 .Does(() =>
     {
         foreach(var proj in ProjList)
-            CleanDirectory(DirFrom(proj) + "/bin");
+            CleanDirectory(DirFrom(proj) + "/bin/" + configuration);
     });
 
 //////////////////////////////////////////////////////////////////////
@@ -71,23 +69,12 @@ Task("Build")
 .Does(() =>
     {
         foreach(var proj in ProjList)
+        {
+            var sample = System.IO.Path.GetFileNameWithoutExtension(proj);
+            DisplayHeading("Building " + sample + " sample");
             BuildProject(proj, configuration);
+        }
         
-    });
-
-//////////////////////////////////////////////////////////////////////
-// RESTORE NUNIT CONSOLE
-//////////////////////////////////////////////////////////////////////
-
-Task("RestoreNUnitConsole")
-.Does(() => 
-    {
-        NuGetInstall("NUnit.ConsoleRunner", 
-            new NuGetInstallSettings()
-            {
-                Version = "3.2.0",
-                OutputDirectory = TOOLS_DIR
-            });
     });
 
 //////////////////////////////////////////////////////////////////////
@@ -96,25 +83,26 @@ Task("RestoreNUnitConsole")
 
 Task("Test")
 .IsDependentOn("Rebuild")
-.IsDependentOn("RestoreNUnitConsole")
 .OnError(exception => ErrorDetail.Add(exception.Message))
 .Does(() =>
     {
         foreach(var proj in ProjList)
         {
             var bin = DirFrom(proj) + "/bin/";
-            var dllName = bin + System.IO.Path.GetFileNameWithoutExtension(proj) + ".dll";
+            var projName = System.IO.Path.GetFileNameWithoutExtension(proj);
+            var dllName = bin + projName + ".dll";
 
-            int rc = StartProcess(NUNIT3_CONSOLE,
-                                new ProcessSettings()
-                                {
-                                    Arguments = dllName
-                                });
+            DisplayHeading("Testing " + projName + " sample");
 
-            if (rc > 0)
-                ErrorDetail.Add(string.Format("{0}: {1} tests failed", dllName, rc));
-            else if (rc < 0)
-                ErrorDetail.Add(string.Format("{0} exited with rc = {1}", dllName, rc));
+            try
+            {
+                NUnit3(dllName);
+            }
+            catch(CakeException ex)
+            {
+                ErrorDetail.Add("     * " + projName + " test failed.");
+            }
+
         }
     });
 
@@ -123,9 +111,9 @@ Task("Test")
 //////////////////////////////////////////////////////////////////////
 
 Teardown(() =>
-{
-    CheckForError(ref ErrorDetail);
-});
+    {
+        CheckForError(ref ErrorDetail);
+    });
 
 void CheckForError(ref List<string> errorDetail)
 {
@@ -166,6 +154,16 @@ string DirFrom(string filePath)
 {
     return System.IO.Path.GetDirectoryName(filePath);
 }
+
+void DisplayHeading(string heading)
+{
+    Information("");
+    Information("----------------------------------------");
+    Information(heading);
+    Information("----------------------------------------");
+    Information("");
+}
+
 
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS

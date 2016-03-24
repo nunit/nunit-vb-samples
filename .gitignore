@@ -18,4 +18,5 @@ _ReSharper.*
 
 #NuGet
 packages/
-tools/
+tools/*
+!tools/packages.config
