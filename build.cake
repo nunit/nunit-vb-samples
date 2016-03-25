@@ -80,7 +80,7 @@ Task("Build")
             catch (Exception e)
             {
                 // Just record and continue, since samples are independent
-                ErrorDetail.Add("     * " + sample + " build failed.")
+                ErrorDetail.Add("     * " + sample + " build failed.");
             }
         }
     });
@@ -182,7 +182,7 @@ Task("Rebuild")
 .IsDependentOn("Build");
 
 Task("Appveyor")
-.IsDependentOn("Build");
+.IsDependentOn("Build")
 .IsDependentOn("Test");
 
 Task("Default")
