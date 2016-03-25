@@ -72,9 +72,17 @@ Task("Build")
         {
             var sample = System.IO.Path.GetFileNameWithoutExtension(proj);
             DisplayHeading("Building " + sample + " sample");
-            BuildProject(proj, configuration);
+
+            try
+            {
+                BuildProject(proj, configuration);
+            }
+            catch (Exception e)
+            {
+                // Just record and continue, since samples are independent
+                ErrorDetail.Add("     * " + sample + " build failed.")
+            }
         }
-        
     });
 
 //////////////////////////////////////////////////////////////////////
@@ -98,7 +106,7 @@ Task("Test")
             {
                 NUnit3(dllName);
             }
-            catch(CakeException ex)
+            catch(Exception ex)
             {
                 ErrorDetail.Add("     * " + projName + " test failed.");
             }
@@ -172,6 +180,10 @@ void DisplayHeading(string heading)
 Task("Rebuild")
 .IsDependentOn("Clean")
 .IsDependentOn("Build");
+
+Task("Appveyor")
+.IsDependentOn("Build");
+.IsDependentOn("Test");
 
 Task("Default")
 .IsDependentOn("Rebuild");
