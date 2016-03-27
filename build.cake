@@ -186,7 +186,7 @@ Task("Appveyor")
 .IsDependentOn("Test");
 
 Task("Default")
-.IsDependentOn("Rebuild");
+.IsDependentOn("Build");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
