@@ -18,6 +18,9 @@ var PROJ_EXT = "*.vbproj";
 //////////////////////////////////////////////////////////////////////
 
 var ROOT_DIR = Context.Environment.WorkingDirectory.FullPath;
+var TOOLS_DIR = ROOT_DIR + "/tools/";
+var NUNIT3_CONSOLE = TOOLS_DIR + "NUnit.ConsoleRunner/tools/nunit3-console.exe";
+var PACKAGES_CONFIG = TOOLS_DIR + "packages.config";
 
 //////////////////////////////////////////////////////////////////////
 // ERROR LOG
@@ -86,11 +89,26 @@ Task("Build")
     });
 
 //////////////////////////////////////////////////////////////////////
+// RESTORE NUNIT CONSOLE
+//////////////////////////////////////////////////////////////////////
+
+Task("RestoreNUnitConsole")
+.Does(() => 
+    {
+        NuGetRestore(PACKAGES_CONFIG, 
+            new NuGetRestoreSettings()
+            {
+                PackagesDirectory = TOOLS_DIR
+            });
+    });
+
+//////////////////////////////////////////////////////////////////////
 // TEST
 //////////////////////////////////////////////////////////////////////
 
 Task("Test")
 .IsDependentOn("Rebuild")
+.IsDependentOn("RestoreNUnitConsole")
 .OnError(exception => ErrorDetail.Add(exception.Message))
 .Does(() =>
     {
@@ -102,15 +120,16 @@ Task("Test")
 
             DisplayHeading("Testing " + projName + " sample");
 
-            try
-            {
-                NUnit3(dllName);
-            }
-            catch(Exception ex)
-            {
-                ErrorDetail.Add("     * " + projName + " test failed.");
-            }
+            int rc = StartProcess(NUNIT3_CONSOLE,
+                                    new ProcessSettings()
+                                    {
+                                        Arguments = dllName
+                                    });
 
+            if (rc > 0)
+                ErrorDetail.Add(string.Format("{0}: {1} tests failed", projName, rc));
+            else if (rc < 0)
+                ErrorDetail.Add(string.Format("{0} exited with rc = {1}", projName, rc));
         }
     });
 
@@ -130,7 +149,7 @@ void CheckForError(ref List<string> errorDetail)
         var copyError = new List<string>();
         copyError = errorDetail.Select(s => s).ToList();
         errorDetail.Clear();
-        throw new Exception("One or more unit tests failed, breaking the build.\n"
+        throw new Exception("One or more tasks failed, breaking the build.\n"
             + copyError.Aggregate((x,y) => x + "\n" + y));
     }
 }
