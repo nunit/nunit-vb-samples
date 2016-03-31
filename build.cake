@@ -73,8 +73,8 @@ Task("Build")
     {
         foreach(var proj in ProjList)
         {
-            var sample = System.IO.Path.GetFileNameWithoutExtension(proj);
-            DisplayHeading("Building " + sample + " sample");
+            var projName = System.IO.Path.GetFileNameWithoutExtension(proj);
+            DisplayHeading("Building " + projName + " sample");
 
             try
             {
@@ -83,23 +83,9 @@ Task("Build")
             catch (Exception e)
             {
                 // Just record and continue, since samples are independent
-                ErrorDetail.Add("     * " + sample + " build failed.");
+                ErrorDetail.Add("     * " + projName + " build failed.");
             }
         }
-    });
-
-//////////////////////////////////////////////////////////////////////
-// RESTORE NUNIT CONSOLE
-//////////////////////////////////////////////////////////////////////
-
-Task("RestoreNUnitConsole")
-.Does(() => 
-    {
-        NuGetRestore(PACKAGES_CONFIG, 
-            new NuGetRestoreSettings()
-            {
-                PackagesDirectory = TOOLS_DIR
-            });
     });
 
 //////////////////////////////////////////////////////////////////////
@@ -107,9 +93,7 @@ Task("RestoreNUnitConsole")
 //////////////////////////////////////////////////////////////////////
 
 Task("Test")
-.IsDependentOn("Rebuild")
-.IsDependentOn("RestoreNUnitConsole")
-.OnError(exception => ErrorDetail.Add(exception.Message))
+.IsDependentOn("Build")
 .Does(() =>
     {
         foreach(var proj in ProjList)
