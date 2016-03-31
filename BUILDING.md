@@ -19,14 +19,14 @@ it out each time.
 
 Key arguments to build.cmd / build:
  * -Target, -t <task>                 The task to run - see below.
- * -Configuration, -c [Release|Debug] The configuration to use (default is Release)
- * -Experimental, -e                  Use the experimental build of Roslyn
+ * -Configuration, -c [Release|Debug] The configuration to use (default is Debug).
+ * -Experimental, -e                  Use the experimental build of Roslyn.
 
-The build.cake script contains a large number of interdependent tasks. The most 
+The build.cake script contains a number of interdependent tasks. The most 
 important top-level tasks to use are listed here:
 
 ```
  * Build               Builds everything. This is the default if no target is given.
- * Rebuild             Cleans the output directory and builds everything
+ * Rebuild             Cleans the output directory and builds everything.
  * Test                Runs all tests. Dependent on Build.
 ```
