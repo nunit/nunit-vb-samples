@@ -1,6 +1,7 @@
 # Build and Object Folders
 bin/
 obj/
+TestResult.xml
 
 #User Specific Files
 *.user
@@ -17,3 +18,5 @@ _ReSharper.*
 
 #NuGet
 packages/
+tools/*
+!tools/packages.config

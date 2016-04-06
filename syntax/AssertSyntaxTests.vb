@@ -76,7 +76,7 @@ Namespace NUnit.Samples
             Assert.That(2 + 2 = 5, [Is].False)
 
             ' Inherited syntax
-            Expect(2 + 2 = 5, False)
+            Expect(2 + 2 = 5, [False])
         End Sub
 
         <Test()>
