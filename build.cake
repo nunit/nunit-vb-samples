@@ -144,21 +144,11 @@ void CheckForError(ref List<string> errorDetail)
 
 void BuildProject(string projPath, string configuration)
 {
-    if (IsRunningOnWindows())
-    {
-        MSBuild(projPath, new MSBuildSettings()
-            .SetConfiguration(configuration)
-            .SetMSBuildPlatform(MSBuildPlatform.Automatic)
-            .SetVerbosity(Verbosity.Minimal)
-            .SetNodeReuse(false));
-    }
-    else
-    {
-        XBuild(projPath, new XBuildSettings()
-            .WithTarget("Build")
-            .WithProperty("Configuration", configuration)
-            .SetVerbosity(Verbosity.Minimal));
-    }
+    MSBuild(projPath, new MSBuildSettings()
+        .SetConfiguration(configuration)
+        .SetMSBuildPlatform(MSBuildPlatform.Automatic)
+        .SetVerbosity(Verbosity.Minimal)
+        .SetNodeReuse(false));
 }
 
 string DirFrom(string filePath)
