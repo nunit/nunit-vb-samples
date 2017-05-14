@@ -23,7 +23,6 @@ Namespace NUnit.Samples
 
     <TestFixture()>
     Public Class AssertSyntaxTests
-        Inherits AssertionHelper
 
 #Region "Simple Constraint Tests"
         <Test()>
@@ -157,7 +156,7 @@ Namespace NUnit.Samples
             Assert.That(phrase, Does.Contain("World"))
             ' Only available using new syntax
             Assert.That(phrase, Does.Not.Contains("goodbye"))
-            Assert.That(phrase, Contains("WORLD").IgnoreCase)
+            Assert.That(phrase, Does.Contain("WORLD").IgnoreCase)
             Assert.That(phrase, Does.Not.Contains("BYE").IgnoreCase)
             Assert.That(array, [Is].All.Contains("b"))
         End Sub
