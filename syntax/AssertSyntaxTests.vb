@@ -15,8 +15,7 @@ Namespace NUnit.Samples
     ' in other fixtures.
     ' 
     ' Each test performs the same operations using the classic
-    ' syntax (if available) and the new syntax in both the
-    ' helper-based and inherited forms.
+    ' syntax (if available) and the new syntax.
     ' 
     ' This Fixture will eventually be duplicated in other
     ' supported languages. 
